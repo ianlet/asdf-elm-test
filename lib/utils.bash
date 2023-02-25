@@ -60,11 +60,13 @@ install_version() {
   fi
 
   (
-    mkdir -p "$install_path"
-    cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
-
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+
+    mkdir -p "$install_path"
+    cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path/../"
+    (cd "$install_path/../" && npm install)
+
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
     echo "$TOOL_NAME $version installation was successful!"
